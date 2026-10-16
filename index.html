@@ -106,6 +106,14 @@
   .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
   .card p { color: var(--muted); font-size: 15px; line-height: 1.6; }
 
+  /* About */
+  .about { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: start; }
+  .about-text { display: grid; gap: 16px; color: var(--muted); max-width: 62ch; min-width: 0; }
+  .facts { list-style: none; border-top: 1px solid var(--line); }
+  .facts li { display: grid; gap: 2px; padding-block: 14px; border-bottom: 1px solid var(--line); }
+  .facts strong { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--accent-ink); }
+  @media (max-width: 720px) { .about { grid-template-columns: 1fr; gap: 28px; } }
+
   /* Selectable options */
   .option {
     font: inherit; color: inherit; text-align: left; cursor: pointer;
@@ -201,6 +209,7 @@
   <nav>
     <a href="#" class="logo">Jerry Chitambira<span>.</span></a>
     <ul>
+      <li><a href="#about">About</a></li>
       <li><a href="#trainers">Trainers</a></li>
       <li><a href="#sessions">Prices</a></li>
       <li><a href="#nutrition">Nutrition</a></li>
@@ -218,6 +227,22 @@
       <a class="btn btn-ghost" href="#sessions">See prices</a>
     </div>
   </header>
+
+  <section id="about">
+    <h2 class="label">About Jerry</h2>
+    <p class="title">A coach who knows how to lead people</p>
+    <div class="about">
+      <div class="about-text">
+        <p>I'm Jerry, a coach based in Bromley, South East London. Away from the gym, I've spent years leading and coaching teams across busy London operations. I've run sites of 15 staff, mentored team members who were struggling to hit their targets, and helped people grow their skills and confidence.</p>
+        <p>I bring the same approach to your training. I set clear goals, track your progress and keep you accountable. I also make sure every session feels supportive and well organised.</p>
+      </div>
+      <ul class="facts">
+        <li><strong>Based in</strong><span>Bromley, South East London</span></li>
+        <li><strong>Background</strong><span>Team leadership, coaching &amp; customer experience</span></li>
+        <li><strong>Style</strong><span>Goal-driven, organised, supportive</span></li>
+      </ul>
+    </div>
+  </section>
 
   <section id="services">
     <h2 class="label">Services</h2>
@@ -368,6 +393,7 @@
       <li><div><strong>Third Space</strong><span class="area">Canary Wharf, E14</span></div><span class="tag">1:1</span></li>
       <li><div><strong>PureGym</strong><span class="area">London Bridge, SE1</span></div><span class="tag">1:1 &amp; group</span></li>
       <li><div><strong>Outdoor sessions</strong><span class="area">Hyde Park, Regent's Park &amp; Victoria Park</span></div><span class="tag">Group</span></li>
+      <li><div><strong>Home &amp; outdoor sessions</strong><span class="area">Bromley &amp; South East London</span></div><span class="tag">1:1 &amp; group</span></li>
       <li><div><strong>Home sessions</strong><span class="area">Across Central London</span></div><span class="tag">By request</span></li>
     </ul>
     <p class="note">Don't see your gym? Get in touch and we'll find a way to make it work.</p>
