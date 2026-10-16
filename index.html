@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jerry Chitambira Personal Training</title>
+<meta name="description" content="Personal training in London with Jerry Chitambira. Choose your trainer, session length and dietary plan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Layout: one narrow column, selectable cards for trainer / session / plan, navy contact band */
+  :root {
+    --bg: #f2f4f8;
+    --surface: #ffffff;
+    --fg: #0e1b2c;
+    --muted: #5b6b80;
+    --line: #d9e0ea;
+    --accent: #ff5f1f;
+    --accent-ink: #c2410c;
+    --band: #0e1b2c;
+    --on-band: #f2f4f8;
+    --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+    --body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a121f; --surface: #111c2d; --fg: #eef2f7; --muted: #93a1b5;
+      --line: #22314a; --accent: #ff7a3d; --accent-ink: #ff9a66;
+      --band: #16243a; --on-band: #eef2f7; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a121f; --surface: #111c2d; --fg: #eef2f7; --muted: #93a1b5;
+    --line: #22314a; --accent: #ff7a3d; --accent-ink: #ff9a66;
+    --band: #16243a; --on-band: #eef2f7; color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  h1, h2, h3, p, ul, ol { margin: 0; padding: 0; }
+  h1, .title, .band h2 { text-wrap: balance; }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  /* Nav */
+  nav { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 28px; }
+  .logo { font-family: var(--display); font-size: 24px; font-weight: 700; letter-spacing: .01em; text-transform: uppercase; text-decoration: none; }
+  .logo span { color: var(--accent); }
+  nav ul { display: flex; gap: 22px; list-style: none; }
+  nav ul a { color: var(--muted); text-decoration: none; font-size: 15px; font-weight: 500; }
+  nav ul a:hover { color: var(--fg); }
+
+  /* Hero */
+  .hero { padding-block: 72px 80px; }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 18px; display: block; }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(52px, 10vw, 104px);
+    font-weight: 700;
+    line-height: .92;
+    text-transform: uppercase;
+    letter-spacing: -.005em;
+    max-width: 760px;
+    margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { font-size: 19px; color: var(--muted); max-width: 540px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 24px; border-radius: 999px;
+    text-decoration: none; font-weight: 600; font-size: 15px;
+    transition: opacity .2s, border-color .2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { opacity: .88; }
+  .btn-ghost { border: 1px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--fg); }
+
+  /* Sections */
+  section { padding-block: 72px; border-top: 1px solid var(--line); }
+  .label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 10px; }
+  .title { font-family: var(--display); font-size: clamp(34px, 5vw, 46px); font-weight: 700; text-transform: uppercase; line-height: 1; margin-bottom: 14px; max-width: 640px; }
+  .lede { color: var(--muted); max-width: 560px; margin-bottom: 36px; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-5 { grid-template-columns: repeat(5, 1fr); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 26px; min-width: 0; }
+  .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+  /* Selectable options */
+  .option {
+    font: inherit; color: inherit; text-align: left; cursor: pointer;
+    display: flex; flex-direction: column;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  .option:hover { border-color: var(--muted); transform: translateY(-2px); }
+  .option:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .option.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--bg); border: 1px solid var(--line);
+    font-family: var(--display); font-size: 22px; font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .role { font-size: 14px; color: var(--accent-ink); font-weight: 600; margin-bottom: 10px; }
+  .price { font-family: var(--display); font-size: 40px; font-weight: 700; line-height: 1; margin-block: 14px 2px; font-variant-numeric: tabular-nums; }
+  .per { font-size: 13px; color: var(--muted); }
+  .features { list-style: none; margin-top: 16px; font-size: 14px; }
+  .features li { padding-block: 6px; border-top: 1px solid var(--line); }
+  .features li::before { content: "✓"; color: var(--accent); margin-right: 8px; }
+  .choose { margin-top: auto; padding-top: 18px; font-size: 14px; font-weight: 600; }
+  .option.selected .choose { color: var(--accent-ink); }
+  .option.selected .choose::after { content: " · Selected"; }
+
+  /* Session lengths */
+  .session { align-items: flex-start; padding: 22px; }
+  .session h3 { font-size: 16px; margin: 0; }
+  .session .price { font-size: 36px; }
+  .popular { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--accent-ink); margin-top: 8px; }
+  .note { color: var(--muted); font-size: 15px; margin-top: 20px; }
+
+  /* Steps (a real sequence) */
+  .steps { list-style: none; counter-reset: step; }
+  .steps li { display: grid; grid-template-columns: 64px 1fr; padding-block: 22px; border-bottom: 1px solid var(--line); }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before { counter-increment: step; content: counter(step); font-family: var(--display); font-size: 32px; font-weight: 700; line-height: 1; color: var(--accent); }
+  .steps strong { display: block; font-weight: 700; }
+  .steps span { color: var(--muted); }
+
+  /* Gyms */
+  .gyms { list-style: none; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+  .gyms li { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 26px; border-bottom: 1px solid var(--line); }
+  .gyms li:last-child { border-bottom: none; }
+  .gyms strong { font-weight: 700; display: block; }
+  .gyms .area { color: var(--muted); font-size: 15px; }
+  .tag { flex-shrink: 0; font-size: 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; }
+
+  /* Contact band */
+  .band { background: var(--band); color: var(--on-band); border-radius: 22px; padding: 56px 36px; text-align: center; }
+  .band h2 { font-family: var(--display); font-size: clamp(40px, 7vw, 64px); font-weight: 700; text-transform: uppercase; line-height: .95; margin-bottom: 12px; }
+  .band > p { opacity: .75; margin-bottom: 28px; }
+  .summary { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 28px; }
+  .summary span { border: 1px solid color-mix(in srgb, var(--on-band) 30%, transparent); border-radius: 999px; padding: 6px 14px; font-size: 14px; }
+  .summary em { font-style: normal; opacity: .65; }
+  .summary .total { border-color: var(--accent); }
+
+  footer { padding-block: 40px 56px; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--fg); }
+
+  /* Load motion: starts visible, only a small lift */
+  @media (prefers-reduced-motion: no-preference) {
+    .rise { animation: rise .6s ease both; }
+    .rise:nth-child(2) { animation-delay: .06s; }
+    .rise:nth-child(3) { animation-delay: .12s; }
+    .rise:nth-child(4) { animation-delay: .18s; }
+    @keyframes rise { from { transform: translateY(10px); } to { transform: none; } }
+  }
+
+  @media (max-width: 880px) {
+    .grid-4, .grid-5 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+    .grid-5 { grid-template-columns: repeat(2, 1fr); }
+    .grid-4 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    nav ul li:not(:last-child) { display: none; }
+    .hero { padding-block: 40px 56px; }
+    .hero p { font-size: 17px; }
+    section { padding-block: 56px; }
+    .gyms li { padding: 16px 18px; align-items: flex-start; }
+    .band { padding: 44px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <a href="#" class="logo">Jerry Chitambira<span>.</span></a>
+    <ul>
+      <li><a href="#trainers">Trainers</a></li>
+      <li><a href="#sessions">Prices</a></li>
+      <li><a href="#nutrition">Nutrition</a></li>
+      <li><a href="#gyms">Gyms</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow rise">Personal training · London</span>
+    <h1 class="rise">Get stronger. Get fitter. <em>Feel it.</em></h1>
+    <p class="rise">Choose your trainer, pick how long you want to train, and add a dietary plan if you want one. Every plan starts with a free consultation.</p>
+    <div class="actions rise">
+      <a class="btn btn-primary" href="#trainers">Build your plan &rarr;</a>
+      <a class="btn btn-ghost" href="#sessions">See prices</a>
+    </div>
+  </header>
+
+  <section id="services">
+    <h2 class="label">Services</h2>
+    <p class="title">Coaching that fits your week</p>
+    <p class="lede">Train in the gym, outdoors or at home, on your own or with friends.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>1:1 Personal Training</h3>
+        <p>Sessions built around you, with a focus on good technique, steady progress and keeping you on track.</p>
+      </div>
+      <div class="card">
+        <h3>Small Group Training</h3>
+        <p>Train with a friend or a small group. You get the same coaching, a shared cost and extra motivation.</p>
+      </div>
+      <div class="card">
+        <h3>Online Coaching</h3>
+        <p>A personal programme, nutrition guidance and weekly check-ins, wherever you train.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="trainers">
+    <h2 class="label">Step 1 · Trainer</h2>
+    <p class="title">Choose your coach</p>
+    <p class="lede">Each coach has a different focus. Pick the one closest to your goal.</p>
+    <div class="grid pick" data-group="trainer">
+      <button type="button" id="trainer-jerry" class="card option" data-value="Jerry Chitambira">
+        <div class="avatar">JC</div>
+        <h3>Jerry Chitambira</h3>
+        <div class="role">Head Coach · Strength &amp; Body Composition</div>
+        <p>Builds strength, confidence and lasting habits for beginners and experienced lifters.</p>
+        <span class="choose">Choose Jerry</span>
+      </button>
+      <button type="button" id="trainer-amara" class="card option" data-value="Amara Okafor">
+        <div class="avatar">AO</div>
+        <h3>Amara Okafor</h3>
+        <div class="role">HIIT, Conditioning &amp; Fat Loss</div>
+        <p>High-energy sessions to improve fitness, burn fat and build stamina.</p>
+        <span class="choose">Choose Amara</span>
+      </button>
+      <button type="button" id="trainer-daniel" class="card option" data-value="Daniel Reyes">
+        <div class="avatar">DR</div>
+        <h3>Daniel Reyes</h3>
+        <div class="role">Mobility, Rehab &amp; Over-50s</div>
+        <p>Gentle, smart training to move better, ease aches and stay strong for life.</p>
+        <span class="choose">Choose Daniel</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="sessions">
+    <h2 class="label">Step 2 · Session length</h2>
+    <p class="title">Pick how long you train</p>
+    <p class="lede">Prices are per 1:1 session with any trainer.</p>
+    <div class="grid grid-5 pick" data-group="session">
+      <button type="button" id="session-30" class="card option session" data-value="30 minutes" data-price="35" data-unit="session">
+        <h3>30 min</h3>
+        <div class="price">£35</div>
+        <span class="per">per session</span>
+        <span class="choose">Choose</span>
+      </button>
+      <button type="button" id="session-45" class="card option session" data-value="45 minutes" data-price="50" data-unit="session">
+        <h3>45 min</h3>
+        <div class="price">£50</div>
+        <span class="per">per session</span>
+        <span class="choose">Choose</span>
+      </button>
+      <button type="button" id="session-60" class="card option session" data-value="1 hour" data-price="65" data-unit="session">
+        <h3>1 hour</h3>
+        <div class="price">£65</div>
+        <span class="per">per session</span>
+        <span class="popular">Most popular</span>
+        <span class="choose">Choose</span>
+      </button>
+      <button type="button" id="session-90" class="card option session" data-value="1.5 hours" data-price="90" data-unit="session">
+        <h3>1.5 hours</h3>
+        <div class="price">£90</div>
+        <span class="per">per session</span>
+        <span class="choose">Choose</span>
+      </button>
+      <button type="button" id="session-120" class="card option session" data-value="2 hours" data-price="115" data-unit="session">
+        <h3>2 hours</h3>
+        <div class="price">£115</div>
+        <span class="per">per session</span>
+        <span class="choose">Choose</span>
+      </button>
+    </div>
+    <p class="note">Small group sessions cost half price per person (2–4 people).</p>
+  </section>
+
+  <section id="nutrition">
+    <h2 class="label">Step 3 · Dietary plan (optional)</h2>
+    <p class="title">Add a nutrition plan</p>
+    <p class="lede">Monthly plans, updated as you progress. Cancel any time.</p>
+    <div class="grid grid-4 pick" data-group="plan">
+      <button type="button" id="plan-lean" class="card option" data-value="Lean &amp; Fat Loss" data-price="59" data-unit="month">
+        <h3>Lean &amp; Fat Loss</h3>
+        <p>A steady calorie deficit that keeps you full and your energy up.</p>
+        <div class="price">£59</div>
+        <span class="per">per month</span>
+        <ul class="features"><li>Calorie &amp; macro targets</li><li>Weekly meal plan</li><li>Easy swaps list</li></ul>
+        <span class="choose">Choose plan</span>
+      </button>
+      <button type="button" id="plan-muscle" class="card option" data-value="Muscle Gain" data-price="59" data-unit="month">
+        <h3>Muscle Gain</h3>
+        <p>High protein and a small calorie surplus to build muscle, not fat.</p>
+        <div class="price">£59</div>
+        <span class="per">per month</span>
+        <ul class="features"><li>Protein-first meals</li><li>Pre/post-workout fuel</li><li>Shopping list</li></ul>
+        <span class="choose">Choose plan</span>
+      </button>
+      <button type="button" id="plan-plant" class="card option" data-value="Plant-Based" data-price="69" data-unit="month">
+        <h3>Plant-Based</h3>
+        <p>Vegan or vegetarian meals that still hit your protein goals.</p>
+        <div class="price">£69</div>
+        <span class="per">per month</span>
+        <ul class="features"><li>Vegan or vegetarian</li><li>Complete protein combos</li><li>Batch-cook recipes</li></ul>
+        <span class="choose">Choose plan</span>
+      </button>
+      <button type="button" id="plan-balanced" class="card option" data-value="Balanced Lifestyle" data-price="39" data-unit="month">
+        <h3>Balanced Lifestyle</h3>
+        <p>Flexible, realistic eating for better health without strict rules.</p>
+        <div class="price">£39</div>
+        <span class="per">per month</span>
+        <ul class="features"><li>80/20 approach</li><li>Eating-out guide</li><li>Habit check-ins</li></ul>
+        <span class="choose">Choose plan</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2 class="label">How it works</h2>
+    <p class="title">Three steps to get started</p>
+    <ol class="steps">
+      <li><div><strong>Free consultation</strong><span>We talk about your goals, experience and any injuries or limits.</span></div></li>
+      <li><div><strong>Your plan</strong><span>Your trainer builds a programme that fits your goals and your week.</span></div></li>
+      <li><div><strong>Train and track</strong><span>You train, we measure progress, and we adjust as you improve.</span></div></li>
+    </ol>
+  </section>
+
+  <section id="gyms">
+    <h2 class="label">Where we train</h2>
+    <p class="title">Gyms across London</p>
+    <p class="lede">Sessions run at these locations, outdoors, or in your home.</p>
+    <ul class="gyms">
+      <li><div><strong>Gymbox</strong><span class="area">Covent Garden, WC2</span></div><span class="tag">1:1 &amp; group</span></li>
+      <li><div><strong>Third Space</strong><span class="area">Soho, W1</span></div><span class="tag">1:1</span></li>
+      <li><div><strong>Third Space</strong><span class="area">Canary Wharf, E14</span></div><span class="tag">1:1</span></li>
+      <li><div><strong>PureGym</strong><span class="area">London Bridge, SE1</span></div><span class="tag">1:1 &amp; group</span></li>
+      <li><div><strong>Outdoor sessions</strong><span class="area">Hyde Park, Regent's Park &amp; Victoria Park</span></div><span class="tag">Group</span></li>
+      <li><div><strong>Home sessions</strong><span class="area">Across Central London</span></div><span class="tag">By request</span></li>
+    </ul>
+    <p class="note">Don't see your gym? Get in touch and we'll find a way to make it work.</p>
+  </section>
+
+  <section id="contact">
+    <div class="band">
+      <h2>Ready to start?</h2>
+      <p id="summary-intro">Pick a trainer, session length and plan above, then message me to book your free consultation.</p>
+      <div class="summary" id="summary" hidden></div>
+      <a class="btn btn-primary" href="https://www.linkedin.com/in/jerry-chitambira-71b4062aa/" target="_blank" rel="noopener">Message me on LinkedIn &rarr;</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>&copy; <span id="year">2026</span> Jerry Chitambira · Personal Training, London</span>
+    <a href="https://www.linkedin.com/in/jerry-chitambira-71b4062aa/" target="_blank" rel="noopener">LinkedIn</a>
+  </footer>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Selectable trainer, session length and dietary plan, summarised in the contact band
+  const picks = {};
+  const order = ['trainer', 'session', 'plan'];
+  const labels = { trainer: 'Trainer', session: 'Session', plan: 'Dietary plan' };
+  const summary = document.getElementById('summary');
+  const intro = document.getElementById('summary-intro');
+
+  document.querySelectorAll('.pick').forEach(group => {
+    const key = group.dataset.group;
+    group.querySelectorAll('.option').forEach(opt => {
+      opt.setAttribute('aria-pressed', 'false');
+      opt.addEventListener('click', () => {
+        const already = opt.classList.contains('selected');
+        group.querySelectorAll('.option').forEach(o => {
+          o.classList.remove('selected');
+          o.setAttribute('aria-pressed', 'false');
+        });
+        if (already) {
+          delete picks[key];
+        } else {
+          opt.classList.add('selected');
+          opt.setAttribute('aria-pressed', 'true');
+          picks[key] = { name: opt.dataset.value, price: opt.dataset.price, unit: opt.dataset.unit };
+        }
+        renderSummary();
+      });
+    });
+  });
+
+  function renderSummary() {
+    const keys = order.filter(k => picks[k]);
+    summary.hidden = keys.length === 0;
+    intro.textContent = keys.length
+      ? 'Here is what you picked. Message me with these details to book your free consultation.'
+      : 'Pick a trainer, session length and plan above, then message me to book your free consultation.';
+    summary.innerHTML = keys.map(k => {
+      const p = picks[k];
+      const price = p.price ? ` (£${p.price}/${p.unit})` : '';
+      return `<span><em>${labels[k]}:</em> ${p.name}${price}</span>`;
+    }).join('');
+  }
+</script>
+</body>
+</html>
